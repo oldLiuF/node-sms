@@ -28,9 +28,12 @@ export function query (sql) {
   })
 }
 
+function doFunc (next) {
+  return next()
+}
 export async function queryTest (sql) {
   try {
-    let result = await base(sql)
+    let result = await doFunc(base(sql))
     return result
   } catch (e) {
     console.log(e)

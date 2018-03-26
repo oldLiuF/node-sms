@@ -10,6 +10,7 @@ class User {
    */
   async login (req, res, next) {
     try {
+      // let result = await query(sqlMap.user.login)
       let result = await queryTest(sqlMap.user.getUserList)
       console.log(result)
       res.send(result)

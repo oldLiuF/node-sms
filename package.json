@@ -1,5 +1,5 @@
 {
-  "name": "sms",
+  "name": "node-sms",
   "version": "0.0.0",
   "private": true,
   "scripts": {
