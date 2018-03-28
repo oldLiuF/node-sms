@@ -4,6 +4,6 @@ import user from '../controller/user'
 const router = express.Router()
 
 /* GET users listing. */
-router.get('/api/test', user.login)
+router.post('/api/user/login', user.login)
 
 export default router

@@ -9,13 +9,13 @@ const pool = mysql.createPool(dbConf)
  * @param {string} sql
  * @return {promise}
  */
-export function query (sql) {
+export function query (sql, args) {
   return new Promise((resolve, reject) => {
     // 获取链接
     pool.getConnection((err, conn) => {
       if (err) reject(err)
 
-      conn.query(sql, (err, rows) => {
+      conn.query(sql, args, (err, rows) => {
         if (err) {
           reject(err)
         } else {

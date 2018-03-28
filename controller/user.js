@@ -1,4 +1,4 @@
-import { query, queryTest } from '../common/basicConnection'
+import { query } from '../common/basicConnection'
 import sqlMap from '../common/sqlMap'
 
 class User {
@@ -8,15 +8,23 @@ class User {
    * @param {*} res
    * @param {*} next
    */
-  async login (req, res, next) {
+  async login ({ body }, res, next) {
     try {
-      // let result = await query(sqlMap.user.login)
-      let result = await queryTest(sqlMap.user.getUserList)
+      let result = await query(sqlMap.user.login,
+        [body.username, body.password]
+      )
+      if (result.length === 0) {
+        res.send({})
+      } else {
+        res.send(result[0])
+      }
       console.log(result)
-      res.send(result)
     } catch (e) {
       console.log(e)
-      throw new Error(e)
+      res.send({
+        errno: e.error,
+        message: e.message
+      })
     }
   }
 }
