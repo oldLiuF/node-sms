@@ -1,5 +1,6 @@
 import { query } from '../common/basicConnection'
 import sqlMap from '../common/sqlMap'
+import moment from 'moment'
 
 class User {
   /**
@@ -25,6 +26,27 @@ class User {
         errno: e.error,
         message: e.message
       })
+    }
+  }
+
+  async register ({ body }, res, next) {
+    try {
+      let users = await query(sqlMap.user.findUserByName, body.username)
+
+      if (users.length === 1) {
+        res.send({
+          message: '账号已存在'
+        })
+      } else {
+        let result = await query(sqlMap.user.register,
+          [body.username, body.password, moment().format('YYYY-MM-DD HH:mm:ss'), null]
+        )
+        res.send({
+          id: result.insertId
+        })
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 }
