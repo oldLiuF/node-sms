@@ -1,5 +1,8 @@
 import router from './routes/index'
 import express from 'express'
+import session from 'express-session'
+import connectMysql from 'express-mysql-session'
+import dbConf from './config/db'
 // import multer from 'multer'
 
 var path = require('path')
@@ -24,6 +27,25 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
+const MySqlStore = connectMysql(session)
+
+app.use(session({
+  secret: 'oldLiu', // 用来对session id相关的cookie进行签名
+  resave: false, // 是否每次都重新保存会话
+  saveUninitialized: false, // 是否自动保存未初始化的会话
+  store: new MySqlStore(dbConf),
+  cookie: {
+    secure: false, // 只有 https 可以使用 cookie
+    maxAge: 2 * 60 * 1000 // 最大存储时间
+  }
+}))
+
+app.all('*', (req, res, next) => {
+  console.log(req.session)
+  res.header('Access-Control-Allow-Credentials', true) // 可以带cookies
+  next()
+})
 
 router(app)
 

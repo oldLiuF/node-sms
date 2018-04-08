@@ -9,14 +9,15 @@ class User {
    * @param {*} res
    * @param {*} next
    */
-  async login ({ body }, res, next) {
+  async login (req, res, next) {
     try {
       let result = await query(sqlMap.user.login,
-        [body.username, body.password]
+        [req.body.username, req.body.password]
       )
       if (result.length === 0) {
         res.send({})
       } else {
+        req.session.user_id = result[0].id
         res.send(result[0])
       }
       console.log(result)
