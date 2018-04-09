@@ -1,6 +1,7 @@
 import { query } from '../common/basicConnection'
 import sqlMap from '../common/sqlMap'
 import moment from 'moment'
+import UserModel from '../models/user'
 
 class User {
   /**
@@ -49,6 +50,14 @@ class User {
     } catch (e) {
       console.log(e)
     }
+  }
+
+  async test (req, res, next) {
+    let result = await UserModel.findOne({
+      username: 'test1',
+      password: '1'
+    })
+    res.send(result)
   }
 }
 

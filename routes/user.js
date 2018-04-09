@@ -8,4 +8,6 @@ router.post('/api/user/login', User.login)
 
 router.post('/api/user/register', User.register)
 
+router.get('/api/user/test', User.test)
+
 export default router

@@ -8,6 +8,7 @@ CREATE TABLE user(
   `password` VARCHAR(30) NOT NULL, -- 密码
   createDate DATETIME NOT NULL -- 创建日期
   lastLoginTime DATETIME -- 最后登录日期
+  token VARCHAR(100)
   PRIMARY KEY (id)
 );
 
@@ -16,6 +17,7 @@ ALTER TABLE user ADD createDate DATETIME NOT NULL
 -- 最后登录时间
 ALTER TABLE user ADD lastLoginTime DATETIME
 
+ALTER TABLE user ADD token VARCHAR(100)
 
 INSERT INTO user(username, `password`) 
 VALUES ('oldLiu', 'root1234');

@@ -1,5 +1,8 @@
-class User {
+import BasicModel from './basicModel'
+
+class User extends BasicModel {
   constructor (username, password, createDate) {
+    super()
     this.username = username
     this.password = password
     this.createDate = createDate
