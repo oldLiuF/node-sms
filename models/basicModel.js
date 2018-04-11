@@ -1,6 +1,10 @@
 import { query } from '../common/basicConnection'
 
 class BasicModel {
+  /**
+   * 根据条件返回一个结果
+   * @param {Object} params 条件
+   */
   static async findOne (params) {
     // 查询表名
     const tabelName = this.name.toUpperCase()
@@ -11,10 +15,17 @@ class BasicModel {
     let basicSql = `SELECT * FROM ${tabelName} `
     // 条件
     let condition = ''
+    // 参数长度
     let paramsLen = Object.keys(params).length
     // 单条件
     if (paramsLen === 1) {
-      condition = `${Object.keys(params)[0].toUpperCase()} = ${Object.values(params)[0]}`
+      let key = Object.keys(params)[0].toUpperCase()
+      let value = Object.values(params)[0]
+      if (typeof value !== 'string') {
+        condition = `${key} = ${value}`
+      } else {
+        condition = `${key} = '${value}'`
+      }
     } else {
       let i = 1
       for (let key in params) {
@@ -34,10 +45,17 @@ class BasicModel {
     }
 
     sql = basicSql + WHERE + condition
+    console.log('sql: ' + sql)
+    try {
+      let result = await query(sql)
+      return result[0] ? result[0] : null
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
-    let result = await query(sql)
+  async save (params) {
 
-    return result[0] ? result[0] : null
   }
 }
 

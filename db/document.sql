@@ -8,7 +8,7 @@ CREATE TABLE user(
   `password` VARCHAR(30) NOT NULL, -- 密码
   createDate DATETIME NOT NULL -- 创建日期
   lastLoginTime DATETIME -- 最后登录日期
-  token VARCHAR(100)
+  token VARCHAR(500)
   PRIMARY KEY (id)
 );
 

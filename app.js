@@ -1,8 +1,9 @@
 import router from './routes/index'
 import express from 'express'
-import session from 'express-session'
-import connectMysql from 'express-mysql-session'
-import dbConf from './config/db'
+import passport from 'passport'
+// import session from 'express-session'
+// import connectMysql from 'express-mysql-session'
+// import dbConf from './config/db'
 // import multer from 'multer'
 
 var path = require('path')
@@ -12,7 +13,7 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 
 var app = express()
-
+app.use(passport.initialize())
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'))
 // app.set('view engine', 'jade')
@@ -20,15 +21,15 @@ var app = express()
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'))
-app.use(bodyParser.json())
+app.use(bodyParser.json()) // 格式化 body 内容
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 // app.use(multer())
 
-app.use(cookieParser())
+app.use(cookieParser()) // 格式化 cookie
 app.use(express.static(path.join(__dirname, 'public')))
 
-const MySqlStore = connectMysql(session)
+/* const MySqlStore = connectMysql(session)
 
 app.use(session({
   secret: 'oldLiu', // 用来对session id相关的cookie进行签名
@@ -39,7 +40,7 @@ app.use(session({
     secure: false, // 只有 https 可以使用 cookie
     maxAge: 2 * 60 * 1000 // 最大存储时间
   }
-}))
+})) */
 
 app.all('*', (req, res, next) => {
   console.log(req.session)

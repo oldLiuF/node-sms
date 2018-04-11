@@ -2,6 +2,8 @@ import { query } from '../common/basicConnection'
 import sqlMap from '../common/sqlMap'
 import moment from 'moment'
 import UserModel from '../models/user'
+import jwt from 'jsonwebtoken'
+import secret from '../config/token'
 
 class User {
   /**
@@ -58,6 +60,49 @@ class User {
       password: '1'
     })
     res.send(result)
+  }
+
+  info (req, res, next) {
+    console.log(req)
+    res.send({
+      username: req.user.username
+    })
+  }
+
+  // // 检查用户名与密码, 如果验证通过, 生成一个accesstoken
+  async accesstoken (req, res, next) {
+    let user = await UserModel.findOne({
+      username: req.body.username
+    })
+
+    if (!user) {
+      res.send({
+        success: false,
+        message: '认证失败, 用户不存在'
+      })
+    } else {
+      if (user.password === req.body.password) {
+        let token = jwt.sign({ name: user.username }, secret, {
+          expiresIn: 60 // 过期时间
+        })
+        try {
+          // 保存 token
+          let result = await query(sqlMap.user.saveToken, [token, user.id])
+
+          if (result.serverStatus === 2) {
+            res.send({
+              success: true,
+              message: '验证成功!',
+              token: 'Bearer ' + token,
+              name: user.username
+            })
+          }
+          console.log(result)
+        } catch (e) {
+          res.send(e)
+        }
+      }
+    }
   }
 }
 

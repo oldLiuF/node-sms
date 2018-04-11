@@ -8,13 +8,13 @@ class User extends BasicModel {
     this.createDate = createDate
   }
 
-  set username (value) {
+  /* set username (value) {
     this.username = value
   }
 
   get username () {
     return this.username
-  }
+  } */
 }
 
 export default User
