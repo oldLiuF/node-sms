@@ -1,6 +1,7 @@
 import router from './routes/index'
 import express from 'express'
 import passport from 'passport'
+
 // import session from 'express-session'
 // import connectMysql from 'express-mysql-session'
 // import dbConf from './config/db'
@@ -43,7 +44,6 @@ app.use(session({
 })) */
 
 app.all('*', (req, res, next) => {
-  console.log(req.session)
   res.header('Access-Control-Allow-Credentials', true) // 可以带cookies
   next()
 })

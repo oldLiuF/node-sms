@@ -83,7 +83,7 @@ class User {
     } else {
       if (user.password === req.body.password) {
         let token = jwt.sign({ name: user.username }, secret, {
-          expiresIn: 60 // 过期时间
+          expiresIn: '60s' // 过期时间
         })
         try {
           // 保存 token
@@ -94,6 +94,7 @@ class User {
               success: true,
               message: '验证成功!',
               token: 'Bearer ' + token,
+              status: 200,
               name: user.username
             })
           }
