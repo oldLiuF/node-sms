@@ -1,7 +1,7 @@
 import router from './routes/index'
 import express from 'express'
 import passport from 'passport'
-
+import jwt from 'jsonwebtoken'
 // import session from 'express-session'
 // import connectMysql from 'express-mysql-session'
 // import dbConf from './config/db'
@@ -65,9 +65,16 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
+  if (err instanceof jwt.TokenExpiredError) {
+    res.status(401).send({
+      code: 50001,
+      message: 'token 过期'
+    })
+  } else {
   // render the error page
-  res.status(err.status || 500).send(err.message)
+    res.status(err.status || 500).send(err.message)
   // res.render('error')
+  }
 })
 
 module.exports = app

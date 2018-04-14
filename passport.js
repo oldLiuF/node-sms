@@ -7,7 +7,10 @@ export default function (passport) {
   passport.use(new Strategy((token, done) => {
     jwt.verify(token, secret, async (err, decoded) => {
       // 验证 token 是否合法
-      if (err) return done(err)
+      if (err) {
+        // token 过期
+        return done(err)
+      }
       try {
         // 能否找到用户
         let user = await UserModel.findOne({ token })
